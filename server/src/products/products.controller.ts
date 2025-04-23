@@ -7,28 +7,45 @@ import {
     Patch,
     Delete,
     UseGuards,
-    UsePipes,
-    ValidationPipe,
-  } from '@nestjs/common';
-  import { ApiTags, ApiBearerAuth, ApiOperation } from '@nestjs/swagger';
+    UseInterceptors,
+    UploadedFile,
+    Req} from '@nestjs/common';
+  import { ApiTags, ApiBearerAuth, ApiOperation, ApiConsumes } from '@nestjs/swagger';
   import { ProductsService } from './products.service';
   import { CreateProductDto } from './dto/create-product.dto';
   import { UpdateProductDto } from './dto/update-product.dto';
   import { JwtAuthGuard } from '../auth/jwt-auth.guard';
+  //
+
+  import { v4 as uuidv4 } from 'uuid';
+  import { diskStorage } from 'multer';
+  import { FileInterceptor } from '@nestjs/platform-express';
+  import * as path from 'path';
+  import { Request } from 'express';
+
+ 
   
   @ApiTags('Products')
   @ApiBearerAuth()
   @UseGuards(JwtAuthGuard)
   @Controller('products')
   export class ProductsController {
-    constructor(private readonly productsService: ProductsService) {}
+
+    //
+
+    constructor(
+      private readonly productsService: ProductsService,
+    ) {}
   
     @Post()
-    @UsePipes(new ValidationPipe({ whitelist: true }))
+    @UseGuards(JwtAuthGuard) // Optional if route is protected
+    @ApiBearerAuth() // Swagger support for JWT
     @ApiOperation({ summary: 'Create a new product' })
-    create(@Body() dto: CreateProductDto) {
-      return this.productsService.create(dto);
+    async create(@Body() createProductDto: CreateProductDto) {
+      return this.productsService.create(createProductDto);
     }
+
+    //
   
     @Get()
     @ApiOperation({ summary: 'Get all products' })
@@ -53,5 +70,27 @@ import {
     remove(@Param('id') id: string) {
       return this.productsService.remove(+id);
     }
+
+    //
+
+
+    @Post('upload')
+    @UseInterceptors(FileInterceptor('image', {
+      storage: diskStorage({
+        destination: './assets/products',
+        filename: (req, file, cb) => {
+          const ext = path.extname(file.originalname);
+          const filename = `${uuidv4()}${ext}`;
+          cb(null, filename);
+        },
+      }),
+    }))
+    uploadFile(@UploadedFile() file: Express.Multer.File, @Req() req: Request) {
+      const imageUrl = `${req.protocol}://${req.get('host')}/assets/products/${file.filename}`;
+      return { imageUrl };
+    }
+
+
+
   }
   

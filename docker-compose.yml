@@ -3,7 +3,6 @@ version: "3.8"
 services:
   db:
     image: postgres:15
-    restart: always
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
@@ -12,6 +11,31 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: ./server
+    environment:
+      DATABASE_URL: "postgresql://postgres:postgres@db:5432/ecommerce_db"
+      JWT_SECRET: "your-secret-key"
+    depends_on:
+      - db
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./server:/app
+    command: npm run start:dev
+
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile.dev
+    ports:
+      - "5000:5000"  # for Vite, change to 3000 if using CRA
+    volumes:
+      - ./client:/app
+      - /app/node_modules
+    stdin_open: true
+    tty: true
 
 volumes:
   postgres_data:

@@ -26,4 +26,9 @@ export class CreateProductDto {
   @IsNumber()
   @IsNotEmpty()
   price: number;
+
+  @ApiProperty({ example: 'Delicious_pistachio_butter.png' })
+  @IsOptional()
+  @IsString()
+  imageUrl?: string;
 }

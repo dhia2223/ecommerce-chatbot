@@ -1,19 +1,20 @@
- 
-# Use Node.js image
-FROM node:18
+# Use a Node.js image with version >=18
+FROM node:18-alpine
 
-# Set working directory
+# Set the working directory inside the container
 WORKDIR /app
 
-# Install deps
+# Copy package.json and package-lock.json
 COPY package*.json ./
+
+# Install the dependencies
 RUN npm install
 
-# Copy app files
+# Copy the entire application
 COPY . .
 
-# Install nodemon for dev
-RUN npm install -g nodemon
+# Expose the port where the app will run
+EXPOSE 3000
 
-# Run server in dev mode
-CMD ["nodemon", "src/main.ts"]
+# Run the NestJS app
+CMD ["npm", "run", "start:dev"]
