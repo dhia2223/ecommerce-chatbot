@@ -1,17 +1,12 @@
 import { useState } from "react";
 import { login as loginApi } from "../services/authService";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
-
-
 
 export default function Login() {
   const [form, setForm] = useState({ email: "", password: "" });
   const navigate = useNavigate();
   const { login } = useAuth();
-  console.log("Rendering Login.jsx");
-
-
 
   const handleChange = (e) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
@@ -21,38 +16,73 @@ export default function Login() {
     e.preventDefault();
     try {
       const { access_token: token, user } = await loginApi(form);
-      login(token, user); // ✅ Store in context
-      console.log("Login success! Navigating to home...");
-      navigate("/home");
-      console.log(" Navigating to dashboard...");
+      login(token, user);
+      // navigate("/home");
+      if (user.role === 'ADMIN') {
+        navigate('/admin');
+      } else {
+        navigate('/home');
+      }
     } catch (err) {
       console.error("Login failed", err);
     }
   };
 
-
-  
-
   return (
-    <form onSubmit={handleSubmit} className="max-w-md mx-auto mt-10 space-y-4">
-      <input
-        name="email"
-        value={form.email}
-        onChange={handleChange}
-        placeholder="Email"
-        className="w-full border p-2"
-      />
-      <input
-        name="password"
-        value={form.password}
-        onChange={handleChange}
-        type="password"
-        placeholder="Password"
-        className="w-full border p-2"
-      />
-      <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded">
-        Login
-      </button>
-    </form>
+    <div className="min-h-screen flex items-center justify-center bg-third dark:bg-four px-4">
+      <div className="w-full max-w-md bg-white dark:bg-gray-900 shadow-lg rounded-xl p-8">
+        <h2 className="text-3xl font-bold text-center text-primary mb-6">
+          E-COMMERCE LOGIN
+        </h2>
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-gray-700 dark:text-white mb-1" htmlFor="email">
+              Email
+            </label>
+            <input
+              name="email"
+              type="email"
+              value={form.email}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white"
+            />
+          </div>
+          <div>
+            <label className="block text-gray-700 dark:text-white mb-1" htmlFor="password">
+              Password
+            </label>
+            <input
+              name="password"
+              type="password"
+              value={form.password}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary dark:bg-gray-800 dark:text-white"
+            />
+          </div>
+
+          <div className="text-right">
+            <Link to="/forgot-password" className="text-sm text-primary hover:underline">
+              Forgot password?
+            </Link>
+          </div>
+
+          <button
+            type="submit"
+            className="w-full bg-primary hover:bg-secondary text-white py-2 rounded-md transition-all duration-200"
+          >
+            Login
+          </button>
+        </form>
+
+        <p className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
+          Don't have an account?{" "}
+          <Link to="/register" className="text-primary hover:underline font-medium">
+            Sign up
+          </Link>
+        </p>
+      </div>
+    </div>
   );
 }

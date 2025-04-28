@@ -1,23 +1,3 @@
-// const colors = require('tailwindcss/colors');
-
-// module.exports = {
-//   darkMode: 'class', // enables dark mode with a class
-//   content: [
-//     "./index.html",
-//     "./src/**/*.{js,ts,jsx,tsx}",
-//   ],
-//   theme: {
-//     extend: {
-//       colors: {
-//         primary: '#2563EB',      // blue-600
-//         secondary: '#1E40AF',    // blue-800
-//         accent: '#FACC15',       // yellow-400
-//         neutral: '#F3F4F6',      // gray-100
-//       },
-//     },
-//   },
-//   plugins: [],
-// }
 
 module.exports = {
   darkMode: 'class', // Enable dark mode via class

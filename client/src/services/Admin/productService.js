@@ -1,55 +1,115 @@
-
+import api from '../../api';
 
 
 export const uploadImageToLocal = async (file) => {
-    const token = localStorage.getItem('token');
-  
-    const formData = new FormData();
-    formData.append('image', file);
-  
-    const res = await fetch('http://localhost:3000/products/upload', {
-      method: 'POST',
-      body: formData,
+  const token = localStorage.getItem('token');
+
+  const formData = new FormData();
+  formData.append('image', file);
+
+  try {
+    const res = await api.post('/products/upload', formData, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-  
-    if (!res.ok) {
-      throw new Error('Image upload failed');
-    }
-  
-    const data = await res.json();
-    return data.imageUrl;
+    return res.data.imageUrl;
+  } catch (error) {
+    throw new Error('Image upload failed');
+  }
 };
-  
-  
+
 export const createProduct = async (product) => {
-    const token = localStorage.getItem('token');
-  
-    const parsedProduct = {
-      ...product,
-      stock: parseInt(product.stock, 10),
-      price: parseFloat(product.price),
-    };
-  
-    console.log('Creating product with:', parsedProduct);
-  
-    const res = await fetch('http://localhost:3000/products', {
-      method: 'POST',
+  const token = localStorage.getItem('token');
+
+  const parsedProduct = {
+    ...product,
+    stock: parseInt(product.stock, 10),
+    price: parseFloat(product.price),
+  };
+
+  console.log('Creating product with:', parsedProduct);
+
+  try {
+    const res = await api.post('/products', parsedProduct, {
       headers: {
-        'Content-Type': 'application/json',
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(parsedProduct),
     });
-  
-    if (!res.ok) {
-      const errorBody = await res.text();
-      console.error('Backend response:', errorBody);
-      throw new Error('Failed to create product');
-    }
-  
-    return await res.json();
+    return res.data;
+  } catch (error) {
+    console.error('Backend response:', error.response?.data || error.message);
+    throw new Error('Failed to create product');
+  }
 };
-  
+
+export const deleteProduct = async (id) => {
+  const token = localStorage.getItem('token');
+
+  try {
+    const res = await api.delete(`/products/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  } catch (error) {
+    throw new Error('Failed to delete product');
+  }
+};
+
+export const getAllProducts = async () => {
+  const token = localStorage.getItem('token');
+
+  try {
+    const res = await api.get('/products', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  } catch (error) {
+    throw new Error('Failed to fetch products');
+  }
+};
+
+export const getProductById = async (id) => {
+  const token = localStorage.getItem('token');
+
+  try {
+    const res = await api.get(`/products/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  } catch (error) {
+    throw new Error('Failed to fetch product');
+  }
+};
+
+
+
+export const updateProduct = async (id, product) => {
+  const token = localStorage.getItem('token');
+
+  const parsedProduct = {
+    ...product,
+    stock: parseInt(product.stock, 10),
+    price: parseFloat(product.price),
+  };
+
+  console.log('Updating product with:', parsedProduct);
+
+  try {
+    const res = await api.patch(`/products/${id}`, parsedProduct, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return res.data;
+  } catch (error) {
+    console.error('Backend response:', error.response?.data || error.message);
+    throw new Error('Failed to update product');
+  }
+};

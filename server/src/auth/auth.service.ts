@@ -29,10 +29,10 @@ export class AuthService {
   }
 
   private signPayload(user: any) {
-    const payload = { sub: user.id, email: user.email };
+    const payload = { sub: user.id, email: user.email, role: user.role };
     return {
       access_token: this.jwt.sign(payload),
-      user: { id: user.id, name: user.name, email: user.email },
+      user: { id: user.id, name: user.name, email: user.email, role: user.role },
     };
   }
 }

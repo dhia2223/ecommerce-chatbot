@@ -9,6 +9,10 @@ export class UsersService {
     return this.prisma.user.create({ data });
   }
 
+  async findAll() {
+    return this.prisma.user.findMany();
+  }
+
   findByEmail(email: string) {
     return this.prisma.user.findUnique({ where: { email } });
   }
@@ -23,6 +27,13 @@ export class UsersService {
     }
 
     return user;
+  }
+
+  async remove(id: string) {
+    await this.findById(id);
+    return this.prisma.user.delete({
+      where: { id },
+    });
   }
   
 }
