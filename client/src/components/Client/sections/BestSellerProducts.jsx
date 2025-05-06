@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import ProductCard from '../ProductCard';
+import ProductCard from '../Product/ProductCard';
 import { getProducts } from '../../../services/Client/productService';
 
 const BestSellerSection = () => {

@@ -22,33 +22,84 @@ datasource db {
 
 model User {
   id        String   @id @default(uuid())
-  name      String
+  name      String    
   email     String   @unique
   password  String
   role      Role     @default(USER)
   createdAt DateTime @default(now())
 
+  carts  Cart[]
   orders Order[]
+  reviews Review[]
 }
 
-model Order {
-  id     Int      @id @default(autoincrement())
-  userId String
-  status String
-  date   DateTime @default(now())
-  items  Json
-  user   User     @relation(fields: [userId], references: [id])
-}
 
 
 model Product {
   id        Int      @id @default(autoincrement())
-  name      String
+  name      String   
   category  String
   tags      String?  // Optional comma‐separated tags
   stock     Int
   price     Float
-  imageUrl  String? 
+  images    String[] 
+  description String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  cartItems   CartItem[]
+  orderItems  OrderItem[]
+  reviews Review[]
+}
+
+model Cart {
+  id        String      @id @default(uuid())
+  userId    String      @unique
+  user      User        @relation(fields: [userId], references: [id])
+  items     CartItem[]
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
+
+model CartItem {
+  id        String   @id @default(uuid())
+  cartId    String
+  cart      Cart     @relation(fields: [cartId], references: [id])
+  productId Int
+  product   Product  @relation(fields: [productId], references: [id])
+  quantity  Int
+}
+
+model Order {
+  id        String       @id @default(uuid())
+  userId    String
+  user      User         @relation(fields: [userId], references: [id])
+  items     OrderItem[]
+  total     Float
+  status    String       @default("pending")
+  createdAt DateTime     @default(now())
+}
+
+model OrderItem {
+  id        String   @id @default(uuid())
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id])
+  productId Int
+  product   Product  @relation(fields: [productId], references: [id])
+  quantity  Int
+  price     Float
+}
+
+
+
+model Review {
+  id        String   @id @default(uuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id])
+  productId Int
+  product   Product  @relation(fields: [productId], references: [id])
+  comment   String
+  rating    Int
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

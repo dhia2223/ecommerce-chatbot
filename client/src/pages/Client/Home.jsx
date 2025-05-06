@@ -53,8 +53,9 @@
 
 
 import React, { useEffect, useState } from 'react';
-import Navbar from '../../components/Client/Navbar';
-import ChatbotButton from '../../components/Client/ChatbotButton';
+import Navbar from '../../components/Client/sections/Navbar';
+// import ChatbotButton from '../../components/Client/Chatbot/ChatbotButton';
+import ChatbotWidget from '../../components/Client/Chatbot/ChatbotWidget';
 import { getProducts } from '../../services/Client/productService';
 
 import HeroSection from '../../components/Client/sections/HeroSection';
@@ -103,7 +104,8 @@ const Home = () => {
         <SearchBar value={search} onChange={(e) => setSearch(e.target.value)} />
         <BestSellerProducts products={filtered} />
       </div> */}
-      <ChatbotButton />
+      {/* <ChatbotButton /> */}
+      <ChatbotWidget />
     </div>
   );
 };

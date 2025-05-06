@@ -7,6 +7,7 @@ import ProtectedRoute from "./components/Client/ProtectedRoute";
 import ProtectedAdminRoute from "./components/Admin/ProtectedAdminRoute";
 import Products from "./pages/Client/Products";
 import Account from './pages/Client/Account';
+import ProductPage from "./pages/Client/ProductDetails";
 
 
 //
@@ -45,6 +46,8 @@ export default function App() {
 
         <Route path="/home" element={<ProtectedRoute><Home/></ProtectedRoute>} />
         <Route path="/products" element={<ProtectedRoute><Products/></ProtectedRoute>} />
+        <Route path="/product/:productId" element={<ProtectedRoute><ProductPage/></ProtectedRoute>} />
+
         {/* <Route path="/products/:id" element={<ProtectedRoute><Products/></ProtectedRoute>} /> */}
         <Route path="/account" element={<ProtectedRoute><Account/></ProtectedRoute>} />
         {/* <Route path="/products/:id" element={<ProductDetails />} /> */}
