@@ -22,11 +22,13 @@ import { diskStorage } from 'multer';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import * as path from 'path';
 import { Request } from 'express';
+import { Roles } from '../auth/decorators/roles.decorator';
+import { RolesGuard } from '../auth/guards/roles.guard';
 
 
 @ApiTags('Products')
-@ApiBearerAuth()
-@UseGuards(JwtAuthGuard)
+// @ApiBearerAuth()
+// @UseGuards(JwtAuthGuard)
 @Controller('products')
 export class ProductsController {
   //
@@ -35,7 +37,8 @@ export class ProductsController {
   ) {}
 
   @Post()
-  @UseGuards(JwtAuthGuard) // Optional if route is protected
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN') 
   @ApiBearerAuth() // Swagger support for JWT
   @ApiOperation({ summary: 'Create a new product' })
   async create(@Body() createProductDto: CreateProductDto) {
@@ -56,12 +59,16 @@ export class ProductsController {
   }
 
   @Patch(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN') 
   @ApiOperation({ summary: 'Update product by id' })
   update(@Param('id') id: string, @Body() dto: UpdateProductDto) {
     return this.productsService.update(+id, dto);
   }
 
   @Delete(':id')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN') 
   @ApiOperation({ summary: 'Delete product by id' })
   remove(@Param('id') id: string) {
     return this.productsService.remove(+id);
@@ -83,6 +90,8 @@ export class ProductsController {
   //   return { imageUrl };
   // }
   @Post('upload')
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles('ADMIN') 
   @UseInterceptors(FilesInterceptor('images', 10, {  // allow up to 10 files
     storage: diskStorage({
       destination: './assets/products',

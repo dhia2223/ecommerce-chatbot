@@ -7,6 +7,7 @@ export default function ProtectedRoute({ children }) {
   console.log("ProtectedRoute - token:", token);
   
   if (!token) {
+    console.log("ProtectedRoute - No token, redirecting to /login");
     return <Navigate to="/login" replace />;
   }
 

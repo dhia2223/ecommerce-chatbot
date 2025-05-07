@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import ProductCard from '../Product/ProductCard';
 import { getProducts } from '../../../services/Client/productService';
+import { useNavigate } from 'react-router-dom';
 
 const BestSellerSection = () => {
   const [bestSellers, setBestSellers] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchBestSellers = async () => {
@@ -26,7 +28,14 @@ const BestSellerSection = () => {
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
           {bestSellers.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            // <ProductCard key={product.id} product={product} />
+            <div
+            key={product.id}
+            onClick={() => navigate(`/product/${product.id}`)}
+            className="cursor-pointer"
+            >
+              <ProductCard product={product} />
+            </div>
           ))}
         </div>
       </div>

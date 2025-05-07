@@ -1,11 +1,10 @@
-// AddToCartButton.jsx
+// components/client/AddToCartButton.jsx
 import React, { useState } from 'react';
 import { useCart } from '../../../context/CartContext'; 
 
-const AddToCartButton = () => {
+const AddToCartButton = ({ product }) => {
   const [quantity, setQuantity] = useState(1);
   const { addToCart } = useCart();
-
 
   return (
     <div className="mt-6 flex items-center space-x-4">
@@ -30,7 +29,7 @@ const AddToCartButton = () => {
         </button>
       </div>
       <button
-        onClick={() => addToCart(product)}
+        onClick={() => addToCart(product, quantity)}
         className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md"
       >
         Add to Cart

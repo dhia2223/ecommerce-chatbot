@@ -8,6 +8,8 @@ import ProtectedAdminRoute from "./components/Admin/ProtectedAdminRoute";
 import Products from "./pages/Client/Products";
 import Account from './pages/Client/Account';
 import ProductPage from "./pages/Client/ProductDetails";
+import Checkout from "./pages/Client/Checkout";
+import Orders from "./pages/Client/Orders";
 
 
 //
@@ -44,12 +46,14 @@ export default function App() {
         
         {/* <Route path="/admin/users/edit/:id" element={<EditUser />} /> */}
 
-        <Route path="/home" element={<ProtectedRoute><Home/></ProtectedRoute>} />
-        <Route path="/products" element={<ProtectedRoute><Products/></ProtectedRoute>} />
-        <Route path="/product/:productId" element={<ProtectedRoute><ProductPage/></ProtectedRoute>} />
+        <Route path="/home" element={<Home/>} />
+        <Route path="/products" element={<Products/>} />
+        <Route path="/product/:productId" element={<ProductPage/>} />
 
         {/* <Route path="/products/:id" element={<ProtectedRoute><Products/></ProtectedRoute>} /> */}
         <Route path="/account" element={<ProtectedRoute><Account/></ProtectedRoute>} />
+        <Route path="/checkout" element={<ProtectedRoute><Checkout/></ProtectedRoute>} />
+        <Route path="/my-orders" element={<ProtectedRoute><Orders/></ProtectedRoute>} />
         {/* <Route path="/products/:id" element={<ProductDetails />} /> */}
         {/* <Route path="/cart" element={<Cart />} /> */}
         {/* <Route path="/checkout" element={<Checkout />} /> */}

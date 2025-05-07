@@ -87,7 +87,7 @@ const ProductPage = () => {
                     price={product.price}
                     description={product.description}
                     />
-                    <AddToCartButton />
+                    <AddToCartButton product={product}/>
                 </div>
                 </div>
 
