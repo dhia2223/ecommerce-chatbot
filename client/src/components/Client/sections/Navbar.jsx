@@ -13,7 +13,7 @@ const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const { cartItems } = useCart();
-  const { token } = useAuth();
+  const { token , logout } = useAuth();
 
   const isAuthenticated = !!token;
 
@@ -39,7 +39,7 @@ const Navbar = () => {
   };
 
   const handleLogout = () => {
-    localStorage.removeItem('token');
+    logout();
     navigate('/login');
   };
 

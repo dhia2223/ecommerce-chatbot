@@ -39,7 +39,7 @@ model Product {
   id        Int      @id @default(autoincrement())
   name      String   
   category  String
-  tags      String?  // Optional comma‐separated tags
+  tags      String?  // comma‐separated tags
   stock     Int
   price     Float
   images    String[] 
@@ -47,9 +47,11 @@ model Product {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+
   cartItems   CartItem[]
   orderItems  OrderItem[]
   reviews Review[]
+  ratingScore Float      @default(0)
 }
 
 model Cart {
@@ -99,7 +101,7 @@ model Review {
   productId Int
   product   Product  @relation(fields: [productId], references: [id])
   comment   String
-  rating    Int
+  rating    Int?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }

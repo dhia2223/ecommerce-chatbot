@@ -8,18 +8,29 @@ import ProductInfo from '../../components/Client/Product/ProductInfo';
 import ProductReviews from '../../components/Client/Product/ProductReviews';
 import AddToCartButton from '../../components/Client/Product/AddToCartButton';
 
+import { getReviewsByProductId, addReview } from '../../services/Client/reviewService';
+import { useAuth } from '../../context/AuthContext'; // Assuming you have an AuthContext
+
+
+
 const ProductPage = () => {
   const [product, setProduct] = useState(null);
   const [error, setError] = useState(null);
   const { productId } = useParams();
   const navigate = useNavigate();
 
-  // Fallback reviews
-  const staticReviews = [
-    'Absolutely love this product! Great quality.',
-    'Arrived quickly and exactly as described.',
-    'Will definitely order again – highly recommended!'
-  ];
+  const { user } = useAuth();
+
+  // Review
+  //const [refresh, setRefresh] = useState(false);
+  const [reviews, setReviews] = useState([]);
+
+  // // Fallback reviews
+  // const staticReviews = [
+  //   'Absolutely love this product! Great quality.',
+  //   'Arrived quickly and exactly as described.',
+  //   'Will definitely order again – highly recommended!'
+  // ];
 
   useEffect(() => {
     if (!productId) {
@@ -30,10 +41,14 @@ const ProductPage = () => {
     const fetchProduct = async () => {
       try {
         const data = await getProductById(productId);
+        // Fetch reviews for the product
+        const fetchedReviews = await getReviewsByProductId(productId);
         if (!data || typeof data !== 'object') {
           throw new Error('Invalid product data received.');
         }
         setProduct(data);
+        // Set reviews, fallback to static reviews if none found
+        setReviews(fetchedReviews);
         setError(null);
       } catch (err) {
         console.error('Failed to fetch product', err);
@@ -61,6 +76,29 @@ const ProductPage = () => {
       </>
     );
   }
+
+  const handleAddReview = async (newReview) => {
+    try {
+      // Assume you get the userId from auth context or token
+      // Assuming useAuthContext is imported and provides user info
+      if (!user ) {
+        alert('You must be logged in to add a review.');
+        return;
+      }
+
+      const reviewToPost = {
+        ...newReview,
+        productId: parseInt(productId),
+        userId: user.id, // Retrieve userId from auth context
+      };
+      await addReview(reviewToPost);
+      const updatedReviews = await getReviewsByProductId(productId);
+      setReviews(updatedReviews);
+    } catch (err) {
+      console.error('Failed to add review', err);
+    }
+  };
+  
 
   return (
     <>
@@ -93,7 +131,8 @@ const ProductPage = () => {
 
                 {/* Reviews */}
                 <div className="mt-16">
-                <ProductReviews reviews={product.reviews?.length ? product.reviews : staticReviews} />
+                {/* <ProductReviews reviews={product.reviews?.length ? product.reviews : staticReviews} /> */}
+                <ProductReviews reviews={reviews} onAddReview={handleAddReview} />
                 </div>
         </div>
 

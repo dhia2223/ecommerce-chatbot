@@ -1,4 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+
+
+
+
 
 const categories = [
   {
@@ -40,25 +45,37 @@ const categories = [
 ];
 
 const CategoriesSection = () => {
+  const navigate = useNavigate();
   return (
     <section className="py-12">
-      <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-6">
+      <div className="h-full max-w-7xl mx-auto px-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 grid-rows-2 gap-6">
         {categories.map((cat, index) => (
-          <div key={index} className={`${cat.color} rounded-lg p-6 flex flex-col justify-between text-white`}>
+          <div
+            key={index}
+            className={`${cat.color} rounded-lg p-6 flex flex-col justify-between text-white`}
+          >
             <div>
-              <h3 className="text-xl font-bold mb-2">{cat.title}</h3>
-              <h2 className="text-2xl md:text-3xl font-extrabold">{cat.highlight}</h2>
+              <h3 className="text-lg font-bold">{cat.title}</h3>
+              <h2 className="text-xl md:text-2xl font-extrabold">{cat.highlight}</h2>
             </div>
-            <div className="flex justify-center my-4">
-              <img src={cat.image} alt={cat.highlight} className="w-60 h-60 object-contain " />
+            <div className="flex justify-center">
+              <img
+                src={cat.image}
+                alt={cat.highlight}
+                className="max-h-32 w-auto object-contain"
+              />
             </div>
-            <button className="bg-white text-black font-semibold py-2 px-4 rounded mt-4 hover:bg-gray-200 transition">
+            <button
+              onClick={() => navigate(`/products?category=${encodeURIComponent(cat.highlight)}`)}
+              className="bg-white text-black font-semibold py-1 px-3 rounded hover:bg-gray-200 transition"
+            >
               Browse
             </button>
           </div>
         ))}
       </div>
     </section>
+
   );
 };
 
