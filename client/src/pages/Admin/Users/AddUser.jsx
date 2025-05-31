@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { register } from '../../../services/authService';
-import AdminNavbar from '../../../components/admin/AdminNavbar';
+import AdminNavbar from '../../../components/Admin/AdminNavbar';
 import UserNavbar from '../../../components/Admin/UserNavbar';
 
 const AddUser = () => {

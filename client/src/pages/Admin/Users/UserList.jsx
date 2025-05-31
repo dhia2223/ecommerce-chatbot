@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getAllUsers, deleteUser } from '../../../services/Admin/userService';
-import AdminNavbar from '../../../components/admin/AdminNavbar';
+import AdminNavbar from '../../../components/Admin/AdminNavbar';
 import UserNavbar from '../../../components/Admin/UserNavbar';
 import { Link } from 'react-router-dom';
 
