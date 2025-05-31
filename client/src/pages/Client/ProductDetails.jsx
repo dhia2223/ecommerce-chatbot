@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getProductById } from '../../services/admin/productService';
+import { getProductById } from '../../services/Admin/productService';
 
 import Navbar from '../../components/Client/sections/Navbar';
 import ProductCarousel from '../../components/Client/Product/ProductCarousel';
