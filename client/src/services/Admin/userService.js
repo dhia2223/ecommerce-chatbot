@@ -2,13 +2,6 @@ import api from '../../api';
 
 
 
-// export const getProducts = async () => {
-//   const res = await api.get('/products'); // 👈 add /api prefix if you use globalPrefix
-//   return res.data;
-// };
-
-
-
 // Get all users
 export const getAllUsers = async () => {
   const response = await api.get('/users');
