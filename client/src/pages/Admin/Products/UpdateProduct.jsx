@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getProductById, updateProduct, uploadImagesToLocal } from '../../../services/admin/productService';
+import { getProductById, updateProduct, uploadImagesToLocal } from '../../../services/Admin/productService';
 
 const UpdateProduct = ({ id, onClose }) => {
   const [productData, setProductData] = useState(null);

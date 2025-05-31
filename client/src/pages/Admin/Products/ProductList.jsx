@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { getAllProducts, deleteProduct } from '../../../services/admin/productService';
-import AdminNavbar from '../../../components/admin/AdminNavbar';
+import { getAllProducts, deleteProduct } from '../../../services/Admin/productService';
+import AdminNavbar from '../../../components/Admin/AdminNavbar';
 import ProductNavbar from '../../../components/Admin/ProductNavbar';
 import UpdateProduct from './UpdateProduct';
 

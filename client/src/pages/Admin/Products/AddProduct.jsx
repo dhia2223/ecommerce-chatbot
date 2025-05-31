@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { uploadImagesToLocal, createProduct } from '../../../services/admin/productService';
-import AdminNavbar from '../../../components/admin/AdminNavbar';
+import { uploadImagesToLocal, createProduct } from '../../../services/Admin/productService';
+import AdminNavbar from '../../../components/Admin/AdminNavbar';
 import ProductNavbar from '../../../components/Admin/ProductNavbar';
 import { v4 as uuidv4 } from 'uuid';
 
